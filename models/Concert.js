@@ -1,25 +1,14 @@
 var mongoose = require('mongoose');
 
-var artistSchema = new mongoose.Schema({
-  name: String
-})
-
-var venueSchema = new mongoose.Schema({
-  name: String,
-  address: String,
-  city: String,
-  state: String,
-  country: String,
-  zipCode: String,
-  url: String,
-  Latitude: Number,
-  Longitude: Number
-});
-
 var concertSchema = new mongoose.Schema({
-  artists: [artistSchema],
-  venue: venueSchema,
+  band: String,
+  genre: String,
+  venue: String,
+  address: String,
   date: Date,
+  time: String,
+  cover : Boolean,
+  userCreated: {type: Boolean, default: true}
 });
 
 var Concert = mongoose.model('Concert', concertSchema);

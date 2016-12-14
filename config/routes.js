@@ -12,15 +12,15 @@ router.get('/', function(req, res, next) {
 router.route('/jambase')
   .get(concertsController.index)
 
-//
-// // API Routes, respond with JSON only
-// router.route('/api/concerts')
-//   .get(concertsController.index)
-//   .post(concertsController.create);
-//
-// router.route('/api/concerts/:id')
-//   .get(concertsController.show)
-//   // .patch(concertsController.update)
-//   .delete(concertsController.destroy);
+
+// API Routes, respond with JSON only
+router.route('/api/concerts')
+  .get(concertsController.index)
+  .post(concertsController.create);
+
+router.route('/api/concerts/:id')
+  .get(concertsController.show)
+  .patch(concertsController.update)
+  .delete(concertsController.destroy);
 
 module.exports = router;

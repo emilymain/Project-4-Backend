@@ -5,11 +5,30 @@ var request = require('request');
 var mongoose = require('./database');
 var Concert = require('../models/Concert');
 
+request('http://api.jambase.com/events?zipCode=90401&api_key='+ process.env.JAMBASE_KEY+'&o=json', function(error, response, body){
+  var concerts = JSON.parse(body).Events.map(function(ev) {
+    var newConcert = new Concert()
+    newConcert.userCreated = false;
+    newConcert.band = ev.Artists[0].Name;
+    newConcert.venue = ev.Venue.Name;
+    newConcert.address = ev.Venue.Address +", "+ ev.Venue.City + ", "+ ev.Venue.State + ", " + ev.Venue.ZipCode; 
 
-var concerts = [];
+    return newConcert;
+  });
 
-
-  request('http://api.jambase.com/events?zipCode=90401&api_key='+ process.env.JAMBASE_KEY+'&o=json', function(error, response, body){
-    concerts = body
-    console.log(concerts)
+  Concert.remove({userCreated: false}, function(err) {
+    if (err) {
+      console.log(err);
+    } else {
+      Concert.create(concerts, function(err, savedConcerts) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("Database seeeded with " + savedConcerts.length + " concerts")
+          mongoose.connection.close();
+        }
+        process.exit()
+      })
+    }
   })
+})
