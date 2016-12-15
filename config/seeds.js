@@ -7,7 +7,7 @@ var count = 0;
 var allConcerts =[];
 
 var myInterval = setInterval(function(){
-  if (count<20) {
+  if (count<10) {
     request('http://api.jambase.com/events?zipCode=90401&api_key='+ process.env.JAMBASE_KEY+'&o=json&page='+count, function(error, response, body){
       var concerts = JSON.parse(body).Events.map(function(ev) {
         var newConcert = new Concert()
